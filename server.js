@@ -20,17 +20,14 @@ app.get('/', (req, res) => {
 
 app.use('/api', (req, res) => {
 	client.games({
-	    fields: '*', // Return all fields
-	    limit: 5, // Limit to 5 results
-	    offset: 15 // Index offset for results
+    fields: '*',
+    limit: 5,
+    offset: 15 
 	}).then(response => {
-	    // response.body contains the parsed JSON response to this query
-	    console.log(response);
+		res.json({ data: response });
 	}).catch(error => {
-	    throw error;
+	   throw error;
 	});
-
-	res.json([{ 'hello': 'world' }]);
 })
 
 app.listen(8080, () => {
