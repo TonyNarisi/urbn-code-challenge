@@ -10,7 +10,8 @@ var config = {
 	entry: APP_DIR + '/index.jsx',
 	output: {
 		path: BUILD_DIR,
-		filename: 'bundle.js'
+		filename: 'bundle.js',
+		publicPath: '/'
 	},
 	resolve: {
 		extensions: ['.js', '.jsx']
@@ -23,9 +24,6 @@ var config = {
 				loader: 'babel-loader'
 			}
 		]
-	},
-	devServer: {
-		contentBase: BUILD_DIR
 	},
 	optimization: {
 		minimize: process.env.NODE_ENV === 'production'

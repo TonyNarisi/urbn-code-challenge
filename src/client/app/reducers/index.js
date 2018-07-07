@@ -1,5 +1,5 @@
 const initialState = {
-	'hello': 'world'
+	'searchTerm': ''
 }
 
 const appStore = (state = initialState, action) => {

@@ -7,16 +7,17 @@
     "test": "console.log('hello world')",
     "bundle_dev": "NODE_ENV=development ./node_modules/.bin/webpack --mode development",
     "bundle_prod": "NODE_ENV=production ./node_modules/.bin/webpack --mode production",
-    "start": "webpack-dev-server"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.0.0-beta.52",
-    "@babel/polyfill": "^7.0.0-beta.51",
     "@babel/preset-env": "^7.0.0-beta.52",
     "@babel/preset-react": "^7.0.0-beta.52",
     "babel-loader": "^8.0.0-beta.4",
+    "cross-fetch": "^2.2.2",
+    "express": "^4.16.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
@@ -24,6 +25,7 @@
     "redux-thunk": "^2.3.0",
     "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8",
+    "webpack-dev-middleware": "^3.1.3",
     "webpack-dev-server": "^3.1.4"
   },
   "devDependencies": {}

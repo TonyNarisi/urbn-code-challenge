@@ -3,7 +3,7 @@
 		"@babel/preset-react",
 		["@babel/preset-env", {
 			"targets": {
-				"browsers": ["last 3 versions", "ie 11"]
+				"browsers": ["last 3 versions", "ie 10"]
 			},
 			"shippedProposals": true
 		}]
