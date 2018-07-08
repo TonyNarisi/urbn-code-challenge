@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { getAll } from '../actions/index.js';
 import UserInteraction from '../containers/UserInteraction';
 import Results from '../containers/Results';
+import styles from '../styles/main.scss';
 
 class App extends Component {
 	componentWillMount() {

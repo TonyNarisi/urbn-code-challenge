@@ -10,6 +10,7 @@ class GameCard extends Component {
 		let game = props.game;
 		return (
 			<div
+				className="game-card"
 				onClick={ (e) => { props.selectGame(game) } }>
 				{ game.cover &&
 					<img src={ game.cover.url } />
