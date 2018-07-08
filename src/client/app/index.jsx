@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import appStore from './reducers/index.js';
-import UserInteraction from './containers/UserInteraction';
+import App from './components/App';
 
 export const store = createStore(
 	appStore,
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV != 'production') {
 
 render(
 	<Provider store={ store }>
-		<UserInteraction />
+		<App />
 	</Provider>,
 	document.getElementById('react-app')
 );
