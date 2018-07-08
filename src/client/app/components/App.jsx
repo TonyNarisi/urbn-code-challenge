@@ -1,17 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getAll } from '../actions/index.js';
 import UserInteraction from '../containers/UserInteraction';
-import SearchResults from '../containers/SearchResults';
+import Results from '../containers/Results';
 
 class App extends Component {
+	componentWillMount() {
+		let props = this.props;
+		props.getAll('genres');
+		props.getAll('themes');
+	}
+
 	render() {
 		return (
 			<div>
 				<UserInteraction />
-				<SearchResults />
+				<Results />
 			</div>
 		)
 	}
 }
 
-export default App;
+export const mapDispatchToProps = (dispatch, ownProps) => {
+	return {
+		getAll: (callType) => {
+			dispatch(getAll(callType));
+		}
+	}
+}
+
+export default connect(null, mapDispatchToProps)(App);

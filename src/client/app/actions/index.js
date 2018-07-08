@@ -1,9 +1,15 @@
 const API_ROOT = '/api';
 
+export const CHANGE_SEARCH_TERM = 'CHANGE_SEARCH_TERM';
 export const BEGIN_SEARCH_CALL = 'BEGIN_SEARCH_CALL';
 export const END_SEARCH_CALL = 'END_SEARCH_CALL';
-export const BEGIN_GENRE_CALL = 'BEGIN_GENRE_CALL';
-export const END_GENRE_CALL = 'END_GENRE_CALL';
+export const BEGIN_API_CALL = 'BEGIN_API_CALL';
+export const END_API_CALL = 'END_API_CALL';
+export const SELECT_GAME = 'SELECT_GAME';
+
+export function changeSearchTerm(term) {
+	return { type: CHANGE_SEARCH_TERM, term };
+}
 
 export function makeSearchCall(term) {
 	return function(dispatch) {
@@ -22,6 +28,7 @@ export function makeSearchCall(term) {
 		.then(data => {
 			data.json().then(resp => {
 				console.log(resp);
+				// All calls to server need check for error
 				dispatch(endSearchCall(false, resp.data.body));
 			})
 		})
@@ -40,30 +47,35 @@ function endSearchCall(hasErrors, results) {
 	return { type: END_SEARCH_CALL, hasErrors, results };
 }
 
-export function getAllGenres() {
+export function getAll(callType) {
 	return function(dispatch) {
-		dispatch(beginGenreCall());
-		return fetch(`${API_ROOT}/genres`, {
+		dispatch(beginApiCall(callType));
+		return fetch(`${API_ROOT}/${callType}`, {
 			method: 'GET'
 		})
 		.then(data => {
 			data.json().then(resp => {
-				console.log(resp);
-				dispatch(endGenreCall(false, resp.data.body));
+				let cleanedPayload = resp.data.body.map(item => {
+					return { id: item.id, name: item.name };
+				})
+				dispatch(endApiCall(callType, false, cleanedPayload));
 			})
 		})
 		.catch(err => {
 			console.log(err);
-			dispatch(endGenreCall(true, []));
+			dispatch(endApiCall(callType, true, []));
 		})
 	}
 }
 
-function beginGenreCall() {
-	return { type: BEGIN_GENRE_CALL };
+function beginApiCall(callType) {
+	return { type: BEGIN_API_CALL, callType };
 }
 
-function endGenreCall(hasErrors, genres) {
-	console.log(genres);
-	return { type: END_GENRE_CALL, hasErrors, genres };
+function endApiCall(callType, hasErrors, payload) {
+	return { type: END_API_CALL, callType, hasErrors, payload };
+}
+
+export function selectGame(game) {
+	return { type: SELECT_GAME, game };
 }

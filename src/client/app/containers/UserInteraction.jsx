@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { makeSearchCall, getAllGenres } from '../actions/index.js';
+import { changeSearchTerm, makeSearchCall } from '../actions/index.js';
 
 class UserInteraction extends Component {
 	render() {
 		let props = this.props;
 		return (
 			<div>
-				<p>Hello worlds</p>
+				<input
+					type="text"
+					value={ props.searchTerm }
+					onChange={ (e) => { props.changeSearchTerm(e.target.value) } } />
 				<button
 					onClick={ (e) => { props.makeSearchCall(props.searchTerm) } }>
 					Click to search
-				</button>
-				<button
-					onClick={ (e) => { props.getAllGenres() } }>
-					Click to retrieve genres
 				</button>
 			</div>
 		)		
@@ -29,11 +28,11 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
+		changeSearchTerm: (term) => {
+			dispatch(changeSearchTerm(term));
+		},
 		makeSearchCall: (term) => {
 			dispatch(makeSearchCall(term));
-		},
-		getAllGenres: () => {
-			dispatch(getAllGenres());
 		}
 	}
 }

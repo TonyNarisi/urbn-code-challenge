@@ -26,6 +26,8 @@ app.use('/api/search', (req, res) => {
 	let offset = req.body.offset;
 	client.games({
     fields: '*',
+		// Sort by popularity to increase chance of what user actually meant showing up
+    order: 'popularity:desc',
     limit: limit,
     offset: offset,
     search: searchTerm
@@ -42,11 +44,26 @@ app.use('/api/genres', (req, res) => {
 		limit: 50
 	})
 	.then(response => {
+		console.log(response);
 		res.json({ data: response });
 	})
 	.catch(err => {
 		console.log(err);
 		res.json({ data: { error: err } });
+	})
+})
+
+app.use('/api/themes', (req, res) => {
+	client.themes({
+		fields: 'id,name,slug,url,created_at,updated_at',
+		limit: 50
+	})
+	.then(response => {
+		res.json({ data: response });
+	})
+	.catch(err => {
+		console.log(err)
+		res.json({ data: { error: err } })
 	})
 })
 

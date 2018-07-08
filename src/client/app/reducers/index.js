@@ -1,9 +1,12 @@
 import {
+	CHANGE_SEARCH_TERM,
+	BEGIN_API_CALL,
+	END_API_CALL,
 	BEGIN_SEARCH_CALL,
 	END_SEARCH_CALL,
-	BEGIN_GENRE_CALL,
-	END_GENRE_CALL
+	SELECT_GAME
 } from '../actions/index.js';
+import { upperFirstChar } from '../helpers.js';
 
 const initialState = {
 	'isSearching': false,
@@ -12,13 +15,23 @@ const initialState = {
 	'searchedTerm': '',
 	'searchResults': [],
 	'isRetrievingGenres': false,
-	'genreApiErrors': false,
-	'genres': []
+	'genresApiErrors': false,
+	'genres': [],
+	'isRetrievingThemes': false,
+	'themesApiErrors': false,
+	'themes': [],
+	'visibleScreen': 'search-results',
+	'selectedGame': null
 }
 
 const appStore = (state = initialState, action) => {
 	console.log(action);
 	switch (action.type) {
+		case CHANGE_SEARCH_TERM:
+			return {
+				...state,
+				searchTerm: action.term
+			}
 		case BEGIN_SEARCH_CALL:
 			return {
 				...state,
@@ -26,6 +39,7 @@ const appStore = (state = initialState, action) => {
 				searchedTerm: state.searchTerm
 			}
 		case END_SEARCH_CALL:
+			// Move this to the API call to limit returned fields
 			let searchResults = action.results.map(res => {
 				return {
 					cover: res.cover,
@@ -39,7 +53,7 @@ const appStore = (state = initialState, action) => {
 					player_perspectives: res.player_perspectives,
 					storyline: res.storyline,
 					summary: res.summary,
-					tags: res.tags,
+					keywords: res.keywords,
 					themes: res.themes,
 					time_to_beat: res.time_to_beat,
 					total_rating: res.total_rating
@@ -51,20 +65,23 @@ const appStore = (state = initialState, action) => {
 				searchApiErrors: action.hasErrors,
 				searchResults
 			}
-		case BEGIN_GENRE_CALL:
+		case BEGIN_API_CALL:
 			return {
 				...state,
-				isRetrievingGenres: true
+				[`isRetrieving${upperFirstChar(action.callType)}`]: true
 			}
-		case END_GENRE_CALL:
-			let genreList = action.genres.map(genre => {
-				return { id: genre.id, name: genre.name };
-			})
+		case END_API_CALL:
 			return {
 				...state,
-				isRetrievingGenres: false,
-				genreApiErrors: action.hasErrors,
-				genres: genreList
+				[`isRetrieving${upperFirstChar(action.callType)}`]: false,
+				[`${action.callType}ApiErrors`]: action.hasErrors,
+				[action.callType]: action.payload
+			}
+		case SELECT_GAME:
+			return {
+				...state,
+				selectedGame: action.game,
+				visibleScreen: 'game-details'
 			}
 		default:
 			return state;
