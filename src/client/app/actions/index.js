@@ -6,12 +6,15 @@ export const END_SEARCH_CALL = 'END_SEARCH_CALL';
 export const BEGIN_API_CALL = 'BEGIN_API_CALL';
 export const END_API_CALL = 'END_API_CALL';
 export const SELECT_GAME = 'SELECT_GAME';
+export const CHANGE_FILTERS = 'CHANGE_FILTERS';
+export const SWITCH_VISIBLE_SCREEN = 'SWITCH_VISIBLE_SCREEN';
 
 export function changeSearchTerm(term) {
 	return { type: CHANGE_SEARCH_TERM, term };
 }
 
 export function makeSearchCall(term) {
+	// Potentially change this to use begin and end API call functions
 	return function(dispatch) {
 		dispatch(beginSearchCall());
 		return fetch(`${API_ROOT}/search`, {
@@ -78,4 +81,35 @@ function endApiCall(callType, hasErrors, payload) {
 
 export function selectGame(game) {
 	return { type: SELECT_GAME, game };
+}
+
+export function changeFilters(category, choice) {
+	return { type: CHANGE_FILTERS, category, choice };
+}
+
+export function searchForSimilar(filters) {
+	return function(dispatch) {
+		dispatch(beginApiCall('similars'));
+		return fetch(`${API_ROOT}/similar`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(filters)
+		})
+		.then(data => {
+			data.json().then(resp => {
+				dispatch(endApiCall('similars', false, resp.data.body));
+				dispatch(switchVisibleScreen('similar-results'));
+			})
+		})
+		.catch(err => {
+			console.log(err);
+			dispatch(endApiCall('similars', true, []));
+		})
+	}
+}
+
+export function switchVisibleScreen(screen) {
+	return { type: SWITCH_VISIBLE_SCREEN, screen };
 }

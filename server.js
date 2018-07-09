@@ -25,17 +25,55 @@ app.use('/api/search', (req, res) => {
 	let limit = req.body.limit;
 	let offset = req.body.offset;
 	client.games({
-    fields: '*',
+    fields: 'cover,developers,game_modes,games,genres,id,name,platforms,player_perspectives,storyline,summary,keywords,themes,time_to_beat,total_rating',
 		// Sort by popularity to increase chance of what user actually meant showing up
     order: 'popularity:desc',
     limit: limit,
     offset: offset,
     search: searchTerm
-	}).then(response => {
+	})
+	.then(response => {
 		res.json({ data: response });
-	}).catch(err => {
+	})
+	.catch(err => {
 		res.json({ data: { error: err } });
 	});
+})
+
+app.use('/api/similar', (req, res) => {
+	let genres = req.body.genres;
+	let themes = req.body.themes
+	var tags = [];
+	genres.map(genre => {
+		let typeId = 1;
+		let tagNumber = typeId << 28;
+		tagNumber |= genre;
+		tags.push(tagNumber);
+	})
+	themes.map(theme => {
+		let typeId = 0;
+		let tagNumber = typeId << 28;
+		tagNumber |= theme;
+		tags.push(tagNumber);
+	})
+	client.games({
+		// The format needed for this differs than the docs show, consider changing to a raw request without SDK
+		filters: {
+			'tags][in': tags.join(',')
+		},
+		fields: 'cover,developers,game_modes,games,genres,id,name,platforms,player_perspectives,storyline,summary,keywords,themes,time_to_beat,total_rating',
+		limit: 10,
+		offset: 0,
+		order: 'popularity:desc'
+	})
+	.then(response => {
+		res.json({ data: response });
+	})
+	.catch(err => {
+		res.json({ data: { error: err } });
+	})
+
+
 })
 
 app.use('/api/genres', (req, res) => {

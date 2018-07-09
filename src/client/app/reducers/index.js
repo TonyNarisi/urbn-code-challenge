@@ -4,7 +4,9 @@ import {
 	END_API_CALL,
 	BEGIN_SEARCH_CALL,
 	END_SEARCH_CALL,
-	SELECT_GAME
+	SELECT_GAME,
+	CHANGE_FILTERS,
+	SWITCH_VISIBLE_SCREEN
 } from '../actions/index.js';
 import { upperFirstChar } from '../helpers.js';
 
@@ -20,8 +22,15 @@ const initialState = {
 	'isRetrievingThemes': false,
 	'themesApiErrors': false,
 	'themes': [],
+	'isRetrievingSimilars': false,
+	'similarsApiErrors': false,
+	'similars': [],
 	'visibleScreen': 'search-results',
-	'selectedGame': null
+	'selectedGame': null,
+	'filters': {
+		'genres': [],
+		'themes': []
+	}
 }
 
 const appStore = (state = initialState, action) => {
@@ -39,31 +48,11 @@ const appStore = (state = initialState, action) => {
 				searchedTerm: state.searchTerm
 			}
 		case END_SEARCH_CALL:
-			// Move this to the API call to limit returned fields
-			let searchResults = action.results.map(res => {
-				return {
-					cover: res.cover,
-					developers: res.developers,
-					game_modes: res.game_modes,
-					games: res.games,
-					genres: res.genres,
-					id: res.id,
-					name: res.name,
-					platforms: res.platforms,
-					player_perspectives: res.player_perspectives,
-					storyline: res.storyline,
-					summary: res.summary,
-					keywords: res.keywords,
-					themes: res.themes,
-					time_to_beat: res.time_to_beat,
-					total_rating: res.total_rating
-				}
-			})
 			return {
 				...state,
 				isSearching: false,
 				searchApiErrors: action.hasErrors,
-				searchResults
+				searchResults: action.results
 			}
 		case BEGIN_API_CALL:
 			return {
@@ -82,6 +71,25 @@ const appStore = (state = initialState, action) => {
 				...state,
 				selectedGame: action.game,
 				visibleScreen: 'game-details'
+			}
+		case CHANGE_FILTERS:
+			var newFilters = state.filters[action.category];
+			if (newFilters.indexOf(action.choice) === -1) {
+				newFilters.push(action.choice);
+			} else {
+				newFilters.splice(newFilters.indexOf(action.choice), 1);
+			}
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					[action.category]: newFilters
+				}
+			}
+		case SWITCH_VISIBLE_SCREEN:
+			return {
+				...state,
+				visibleScreen: action.screen
 			}
 		default:
 			return state;
