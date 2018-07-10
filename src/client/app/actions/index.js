@@ -37,7 +37,7 @@ export function makeSearchCall(term) {
 		})
 		.catch(err => {
 			console.log(err);
-			disaptch(endSearchCall(true, []));
+			dispatch(endSearchCall(true, []));
 		})
 	}
 }

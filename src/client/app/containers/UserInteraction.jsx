@@ -11,19 +11,22 @@ class UserInteraction extends Component {
 			<div className="user-interaction">
 				<Explanation />
 				<div className="row-wrapper">
-					<div className="row max-width">
+					<div className="row max-width narrow-column">
 						<div className="span12">
 							<input
 								type="text"
 								value={ props.searchTerm }
 								onChange={ (e) => { props.changeSearchTerm(e.target.value) } } />
-							<button
-								onClick={ (e) => { 
-									props.makeSearchCall(props.searchTerm);
-									props.history.push('/search-results');
-								} }>
-								Click to search
-							</button>
+							<div className="search__wrapper">
+								<button
+									className="theme-button"
+									onClick={ (e) => { 
+										props.makeSearchCall(props.searchTerm);
+										props.history.push('/search-results');
+									} }>
+									Search
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
