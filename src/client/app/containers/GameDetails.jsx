@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 import { changeFilters, searchForSimilar } from '../actions/index.js';
 import { upperFirstChar, concatFullWords } from '../helpers.js';
 
@@ -78,4 +78,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GameDetails));
+export default connect(mapStateToProps, mapDispatchToProps)(GameDetails);

@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
+import createHistory from "history/createBrowserHistory";
 import { getAll } from '../actions/index.js';
 import UserInteraction from '../containers/UserInteraction';
 import SearchResults from '../containers/SearchResults';
 import GameDetails from '../containers/GameDetails';
 import SimilarResults from '../containers/SimilarResults';
 import styles from '../styles/main.scss';
+
+const history = createHistory();
 
 class App extends Component {
 	componentWillMount() {
@@ -17,7 +20,7 @@ class App extends Component {
 
 	render() {
 		return (
-			<Router>
+			<Router history={ history }>
 				<div>
 					<Route exact path="/" component={ UserInteraction } />
 					<Route path="/search-results" component={ SearchResults } />

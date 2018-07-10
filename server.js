@@ -20,6 +20,19 @@ app.get('/', (req, res) => {
   res.sendFile(`${config.output.path}/index.html`);
 })
 
+// Right now, the codebase only supports users beginning the flow at the root, so we redirect all React Router-rendered routes to root
+app.get('/search-results', (req, res) => {
+	res.redirect('/');
+})
+
+app.get('/game-details', (req, res) => {
+	res.redirect('/');
+})
+
+app.get('/similar-results', (req, res) => {
+	res.redirect('/');
+})
+
 app.use('/api/search', (req, res) => {
 	let searchTerm = req.body.term;
 	let limit = req.body.limit;
