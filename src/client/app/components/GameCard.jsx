@@ -1,6 +1,7 @@
 // This should be a container, not a component, or have the dispatch moved to SearchResults
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { selectGame } from '../actions/index.js';
 import { concatFullWords } from '../helpers.js';
 
@@ -11,7 +12,10 @@ class GameCard extends Component {
 		return (
 			<div
 				className="game-card"
-				onClick={ (e) => { props.selectGame(game) } }>
+				onClick={ (e) => {
+					props.selectGame(game);
+					props.history.push('/game-details');
+				} }>
 				{ game.cover &&
 					<img src={ game.cover.url } />
 				}
@@ -57,4 +61,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameCard);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GameCard));

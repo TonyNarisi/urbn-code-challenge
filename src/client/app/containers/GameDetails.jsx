@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { changeFilters, searchForSimilar } from '../actions/index.js';
 import { upperFirstChar, concatFullWords } from '../helpers.js';
 
@@ -46,7 +47,10 @@ class GameDetails extends Component {
 					)
 				})}
 				<button
-					onClick={ (e) => { props.searchForSimilar(props.filters) } }>
+					onClick={ (e) => {
+						props.searchForSimilar(props.filters);
+						props.history.push('/similar-results');
+					} }>
 					Search for similar games
 				</button>
 			</div>
@@ -74,4 +78,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameDetails);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GameDetails));

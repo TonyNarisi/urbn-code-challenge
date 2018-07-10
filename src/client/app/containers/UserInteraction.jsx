@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { changeSearchTerm, makeSearchCall } from '../actions/index.js';
 
 class UserInteraction extends Component {
@@ -12,7 +13,10 @@ class UserInteraction extends Component {
 					value={ props.searchTerm }
 					onChange={ (e) => { props.changeSearchTerm(e.target.value) } } />
 				<button
-					onClick={ (e) => { props.makeSearchCall(props.searchTerm) } }>
+					onClick={ (e) => { 
+						props.makeSearchCall(props.searchTerm);
+						props.history.push('/search-results');
+					} }>
 					Click to search
 				</button>
 			</div>
@@ -37,4 +41,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserInteraction);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserInteraction));
