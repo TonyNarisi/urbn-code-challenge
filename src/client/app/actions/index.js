@@ -1,5 +1,3 @@
-import { push } from 'react-router-redux';
-
 const API_ROOT = '/api';
 
 export const CHANGE_SEARCH_TERM = 'CHANGE_SEARCH_TERM';
@@ -34,7 +32,6 @@ export function makeSearchCall(term) {
 			data.json().then(resp => {
 				console.log(resp);
 				// All calls to server need check for error
-				push('/search-results');
 				dispatch(endSearchCall(false, resp.data.body));
 			})
 		})
