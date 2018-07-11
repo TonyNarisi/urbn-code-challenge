@@ -75,7 +75,7 @@ app.use('/api/similar', (req, res) => {
 			'tags][in': tags.join(',')
 		},
 		fields: 'cover,developers,game_modes,games,genres,id,name,platforms,player_perspectives,storyline,summary,keywords,themes,time_to_beat,total_rating',
-		limit: 10,
+		limit: 12,
 		offset: 0,
 		order: 'popularity:desc'
 	})

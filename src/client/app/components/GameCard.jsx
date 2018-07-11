@@ -9,6 +9,8 @@ class GameCard extends Component {
 	render() {
 		let props = this.props;
 		let game = props.game;
+		let hasGenres = game.genres && game.genres.length > 0 && props.genres.length > 0;
+		let hasThemes = game.themes && game.themes.length > 0 && props.themes.length > 0;
 		return (
 			<div
 				className="game-card"
@@ -16,31 +18,53 @@ class GameCard extends Component {
 					props.selectGame(game);
 					props.history.push('/game-details');
 				} }>
-				{ game.cover &&
-					<img src={ game.cover.url } />
-				}
-				<h4>{ game.name }</h4>
-				{ game.summary &&
-					<p>{ concatFullWords(game.summary, 75) }...</p>
-				}
-				{ !game.summary && game.storyline &&
-					<p>{ concatFullWords(game.storyline, 75) }...</p>
-				}
-				{ game.genres && game.genres.length > 0 && props.genres.length > 0 &&
-					<div>
-						<p>Genres</p>
-						<ul>
-							{ game.genres.map(genre => {
-								let genreName = props.genres.filter(genreDict => {
-									return genreDict.id === genre;
-								})[0].name;
-								return (
-									<li key={ genre }>{ genreName }</li>
-								)
-							})}
-						</ul>
-					</div>
-				}
+				<div className="game__title-and-cover">
+					{ game.cover &&
+						<img src={ game.cover.url } />
+					}
+					<h4>{ game.name }</h4>
+				</div>
+				<div className="game__bottom">
+					{ game.summary &&
+						<p>{ concatFullWords(game.summary, 75) }...</p>
+					}
+					{ !game.summary && game.storyline &&
+						<p>{ concatFullWords(game.storyline, 75) }...</p>
+					}
+					{ (hasGenres || hasThemes) &&
+						<div>
+							<ul>
+								{ hasGenres && game.genres.map(genre => {
+									let genreName = props.genres.filter(genreDict => {
+										return genreDict.id === genre;
+									})[0].name;
+									return (
+										<li 
+											key={ `genre${ genre }` }
+											className="game__tag">
+											{ genreName }
+										</li>
+									)
+								})}
+								{ hasThemes && game.themes.map(theme => {
+									let themeName = props.themes.filter(themeDict => {
+										return themeDict.id === theme;
+									})[0].name;
+									return (
+										<li
+											key={ `theme${ theme }` }
+											className="game__tag">
+											{ themeName }
+										</li>
+									)
+								})}
+							</ul>
+						</div>
+					}
+					{ !game.summary && !game.storyline && !hasGenres && !hasThemes &&
+						<p>No information available</p>
+					}
+				</div>
 			</div>
 		)		
 	}
@@ -49,7 +73,8 @@ class GameCard extends Component {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		game: ownProps.game,
-		genres: state.genres
+		genres: state.genres,
+		themes: state.themes
 	}
 }
 

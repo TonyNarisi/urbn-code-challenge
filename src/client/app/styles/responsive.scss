@@ -1,0 +1,14 @@
+@media (max-width: 900px) {
+	.game-card {
+		@include flexVals(0 0 47%)
+	}
+}
+
+@media (max-width: 580px) {
+	.game-card {
+		max-width: 400px;
+		margin-left: auto;
+		margin-right: auto;
+		@include flexVals(0 0 100%)
+	}
+}

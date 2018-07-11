@@ -12,7 +12,7 @@ class UserInteraction extends Component {
 				<Explanation />
 				<div className="row-wrapper">
 					<div className="row max-width narrow-column">
-						<div className="span12">
+						<div className="col12">
 							<input
 								type="text"
 								value={ props.searchTerm }

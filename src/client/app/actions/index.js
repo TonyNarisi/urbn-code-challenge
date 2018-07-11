@@ -24,7 +24,7 @@ export function makeSearchCall(term) {
 			},
 			body: JSON.stringify({ 
 				'term': term,
-				'limit': 10,
+				'limit': 12,
 				'offset': 0
 			})
 		})
