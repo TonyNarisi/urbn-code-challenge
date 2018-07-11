@@ -27,6 +27,7 @@ const initialState = {
 	'similars': [],
 	'visibleScreen': 'search-results',
 	'selectedGame': null,
+	'selectedSimilarGame': null,
 	'filters': {
 		'genres': [],
 		'themes': []

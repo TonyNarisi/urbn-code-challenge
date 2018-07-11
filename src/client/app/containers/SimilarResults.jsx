@@ -10,15 +10,22 @@ class SimilarResults extends Component {
 		let cats = ['genres', 'themes'];
 		return (
 			<div>
-				<p>Displaying games with:</p>
-				<div>
-					{	cats.map(cat => {
-						return (
-							<div
-								key={ cat }>
-								{ cat.length > 0 &&
-									<div>
-										<p>{ upperFirstChar(cat) }</p>
+				<div className="row-wrapper">
+					<div className="row max-width standard-row-top-padding">
+						<div className="col12">
+							<h3>Displaying games with:</h3>
+						</div>
+					</div>
+				</div>
+				<div className="row-wrapper">
+					<div className="row max-width">
+						{	cats.map(cat => {
+							return (
+								props.filters[cat].length > 0 &&
+									<div
+										className={ `col${ Math.round(12/cats.filter(arr => { return arr.length > 0 }).length) }` }
+										key={ cat }>
+										<h4>{ upperFirstChar(cat) }</h4>
 										<ul>
 											{ props.filters[cat].map(elm => {
 												// Extract this to helper probably
@@ -31,18 +38,25 @@ class SimilarResults extends Component {
 											})}
 										</ul>
 									</div>
-								}
-							</div>
-						)
-					})}
+							)
+						})}
+					</div>
 				</div>
-				{ props.similars.map(game => {
-					return (
-						<GameCard 
-							key={ game.id }
-							game={ game } />
-					)
-				})}
+				<div className="row-wrapper">
+					<div className="row max-width standard-row-padding">
+						<div className="col12">
+							<div className="search-results__wrapper">
+								{ props.similars.map(game => {
+									return (
+										<GameCard 
+											key={ game.id }
+											game={ game } />
+									)
+								})}
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		)
 	}

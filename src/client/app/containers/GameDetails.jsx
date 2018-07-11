@@ -60,7 +60,7 @@ class GameDetails extends Component {
 				</div>
 				<div className="row-wrapper">
 					<div className="row max-width standard-row-bottom-padding small-row-top-padding">
-						<div className="col12 theme-button">
+						<div className="col12 text-center">
 							<button
 								className="theme-button"
 								onClick={ (e) => {
