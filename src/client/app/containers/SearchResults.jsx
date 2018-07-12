@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { selectSearchedGame } from '../actions/index.js';
+import BackButton from './BackButton';
 import GameCard from '../components/GameCard';
 
 class SearchResults extends Component {
@@ -7,6 +10,8 @@ class SearchResults extends Component {
 		let props = this.props;
 		return (
 			<div>
+				<BackButton 
+					backScreen="search" />
 				<div className="row-wrapper">
 					<div className="row max-width standard-row-top-padding">
 						<div className="col12 text-center">
@@ -28,7 +33,11 @@ class SearchResults extends Component {
 										return(
 											<GameCard
 												key={ game.id }
-												game={ game } />
+												game={ game }
+												handleClick={ (e) => {
+													props.selectSearchedGame(game);
+													props.history.push('/game-details');
+												} } />
 										)
 									})
 								}
@@ -51,4 +60,12 @@ const mapStateToProps = (state, ownProps) => {
 	}
 }
 
-export default connect(mapStateToProps)(SearchResults);
+const mapDispatchToProps = (dispatch, ownProps) => {
+	return {
+		selectSearchedGame: (game) => {
+			dispatch(selectSearchedGame(game));
+		}
+	}
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchResults));

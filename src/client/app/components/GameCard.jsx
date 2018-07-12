@@ -1,4 +1,4 @@
-// This should be a container, not a component, or have the dispatch moved to SearchResults
+// This should be a container, not a component
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -7,17 +7,17 @@ import { concatFullWords } from '../helpers.js';
 
 class GameCard extends Component {
 	render() {
+		var hasAny = {};
 		let props = this.props;
 		let game = props.game;
-		let hasGenres = game.genres && game.genres.length > 0 && props.genres.length > 0;
-		let hasThemes = game.themes && game.themes.length > 0 && props.themes.length > 0;
+		let cats = ['genres', 'themes'];
+		for (var catNum = cats.length, i = 0; i < catNum; i++) {
+			hasAny[cats[i]] = game[cats[i]] && game[cats[i]].length > 0 && props[cats[i]].length > 0;
+		}
 		return (
 			<div
 				className="game-card"
-				onClick={ (e) => {
-					props.selectGame(game);
-					props.history.push('/game-details');
-				} }>
+				onClick={ props.handleClick }>
 				<div className="game__title-and-cover">
 					{ game.cover &&
 						<img src={ game.cover.url } />
@@ -31,37 +31,31 @@ class GameCard extends Component {
 					{ !game.summary && game.storyline &&
 						<p>{ concatFullWords(game.storyline, 75) }...</p>
 					}
-					{ (hasGenres || hasThemes) &&
+					{ (hasAny.genres || hasAny.themes) &&
 						<div>
 							<ul>
-								{ hasGenres && game.genres.map(genre => {
-									let genreName = props.genres.filter(genreDict => {
-										return genreDict.id === genre;
-									})[0].name;
+								{ cats.map(cat => {
 									return (
-										<li 
-											key={ `genre${ genre }` }
-											className="game__tag">
-											{ genreName }
-										</li>
-									)
-								})}
-								{ hasThemes && game.themes.map(theme => {
-									let themeName = props.themes.filter(themeDict => {
-										return themeDict.id === theme;
-									})[0].name;
-									return (
-										<li
-											key={ `theme${ theme }` }
-											className="game__tag">
-											{ themeName }
-										</li>
+										<span key={ cat }>
+											{ hasAny[cat] && game[cat].map(tag => {
+												let tagName = props[cat].filter(dict => {
+													return dict.id === tag;
+												})[0].name;
+												return (
+													<li
+														key={ `${cat}${tag}` }
+														className="game__tag">
+														{ tagName }
+													</li>
+												)
+											})}
+										</span>
 									)
 								})}
 							</ul>
 						</div>
 					}
-					{ !game.summary && !game.storyline && !hasGenres && !hasThemes &&
+					{ !game.summary && !game.storyline && !hasAny.genres && !hasAny.themes &&
 						<p>No information available</p>
 					}
 				</div>
@@ -78,12 +72,4 @@ const mapStateToProps = (state, ownProps) => {
 	}
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-	return {
-		selectGame: (game) => {
-			dispatch(selectGame(game));
-		}
-	}
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GameCard));
+export default connect(mapStateToProps)(GameCard);

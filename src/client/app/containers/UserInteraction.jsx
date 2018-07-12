@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { changeSearchTerm, makeSearchCall } from '../actions/index.js';
+import { changeSearchTerm, makeSearchCall, showNoSearchError, hideNoSearchError } from '../actions/index.js';
 import Explanation from '../components/Explanation';
 
 class UserInteraction extends Component {
@@ -13,20 +13,30 @@ class UserInteraction extends Component {
 				<div className="row-wrapper">
 					<div className="row max-width narrow-column">
 						<div className="col12">
-							<input
-								type="text"
-								value={ props.searchTerm }
-								onChange={ (e) => { props.changeSearchTerm(e.target.value) } } />
-							<div className="search__wrapper">
-								<button
-									className="theme-button"
-									onClick={ (e) => { 
+							<form 
+								onSubmit={ (e) => {
+									e.preventDefault();
+									if (props.searchTerm != '') {
 										props.makeSearchCall(props.searchTerm);
 										props.history.push('/search-results');
-									} }>
-									Search
-								</button>
-							</div>
+									}
+								} }>
+								<input
+									type="text"
+									value={ props.searchTerm }
+									onChange={ (e) => { props.changeSearchTerm(e.target.value) } } />
+								<div className="search__wrapper">
+									<button
+										className={ `theme-button ${ props.searchTerm === '' ? 'inactive' : '' }` }>
+										Search
+									</button>
+								</div>
+							</form>
+							{ props.showNoSearchError &&
+								<div class="error">
+									<p>Please provide a search term</p>
+								</div>
+							}
 						</div>
 					</div>
 				</div>
@@ -37,7 +47,8 @@ class UserInteraction extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		searchTerm: state.searchTerm
+		searchTerm: state.searchTerm,
+		showNoSearchError: state.showNoSearchError
 	}
 }
 
@@ -48,6 +59,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		makeSearchCall: (term) => {
 			dispatch(makeSearchCall(term));
+		},
+		showNoSearchError: () => {
+			dispatch(showNoSearchError());
+		},
+		hideNoSearchError: () => {
+			dispatch(hideNoSearchError());
 		}
 	}
 }

@@ -18,6 +18,7 @@ class App extends Component {
 		let props = this.props;
 		props.getAll('genres');
 		props.getAll('themes');
+		props.getAll('perspectives');
 	}
 
 	render() {

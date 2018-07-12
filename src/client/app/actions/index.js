@@ -3,9 +3,12 @@ const API_ROOT = '/api';
 export const CHANGE_SEARCH_TERM = 'CHANGE_SEARCH_TERM';
 export const BEGIN_SEARCH_CALL = 'BEGIN_SEARCH_CALL';
 export const END_SEARCH_CALL = 'END_SEARCH_CALL';
+export const SHOW_NO_SEARCH_ERROR = 'SHOW_NO_SEARCH_ERROR';
+export const HIDE_NO_SEARCH_ERROR = 'HIDE_NO_SEARCH_ERROR';
 export const BEGIN_API_CALL = 'BEGIN_API_CALL';
 export const END_API_CALL = 'END_API_CALL';
-export const SELECT_GAME = 'SELECT_GAME';
+export const SELECT_SEARCHED_GAME = 'SELECT_SEARCHED_GAME';
+export const SELECT_SIMILAR_GAME = 'SELECT_SIMILAR_GAME';
 export const CHANGE_FILTERS = 'CHANGE_FILTERS';
 export const SWITCH_VISIBLE_SCREEN = 'SWITCH_VISIBLE_SCREEN';
 
@@ -50,6 +53,14 @@ function endSearchCall(hasErrors, results) {
 	return { type: END_SEARCH_CALL, hasErrors, results };
 }
 
+export function showNoSearchError() {
+	return { type: SHOW_NO_SEARCH_ERROR };
+}
+
+export function hideNoSearchError() {
+	return { type: HIDE_NO_SEARCH_ERROR };
+}
+
 export function getAll(callType) {
 	return function(dispatch) {
 		dispatch(beginApiCall(callType));
@@ -79,8 +90,12 @@ function endApiCall(callType, hasErrors, payload) {
 	return { type: END_API_CALL, callType, hasErrors, payload };
 }
 
-export function selectGame(game) {
-	return { type: SELECT_GAME, game };
+export function selectSearchedGame(game) {
+	return { type: SELECT_SEARCHED_GAME, game };
+}
+
+export function selectSimilarGame(game) {
+	return { type: SELECT_SIMILAR_GAME, game };
 }
 
 export function changeFilters(category, choice) {
@@ -99,7 +114,11 @@ export function searchForSimilar(filters) {
 		})
 		.then(data => {
 			data.json().then(resp => {
-				dispatch(endApiCall('similars', false, resp.data.body));
+				let cleanedBody = resp.data.body.map(game => {
+					game.perspectives = game.player_perspectives;
+					return game;
+				})
+				dispatch(endApiCall('similars', false, cleanedBody));
 				dispatch(switchVisibleScreen('similar-results'));
 			})
 		})

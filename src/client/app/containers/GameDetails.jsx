@@ -1,29 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { withRouter } from 'react-router-dom';
 import { changeFilters, searchForSimilar } from '../actions/index.js';
 import { upperFirstChar, concatFullWords } from '../helpers.js';
+import BackButton from './BackButton';
+import GameInfo from '../components/GameInfo';
 
 class GameDetails extends Component {
 	render() {
 		let props = this.props;
+		let filters = props.filters;
 		let game = props.selectedGame;
-		let cats = ['genres', 'themes'];
+		let cats = ['genres', 'themes', 'perspectives'];
+		var hasFilters = false;
+		for (var catNum = cats.length, i = 0; i < catNum; i++) {
+			if (filters[cats[i]].length > 0) {
+				hasFilters = true;
+			}
+		}
 		return(
 			<div>
-				<div className="row-wrapper">
-					<div className="row max-width standard-row-top-padding">
-						<div className="col12">
-							<h2 className="text-center">{ game.name }</h2>
-							{ game.summary &&
-								<p>{ game.summary }</p>
-							}
-							{ !game.summary && game.storyline &&
-								<p>{ game.storyline }</p>
-							}
-						</div>
-					</div>
-				</div>
+				<BackButton 
+					backScreen="search results" />
+				<GameInfo 
+					game={ game } />
 				<div className="row-wrapper">
 					<div className="row max-width standard-row-top-padding game__genres-themes">
 						{ cats.map(cat => {
@@ -42,7 +41,7 @@ class GameDetails extends Component {
 															<label>
 																<input
 																	type="checkbox"
-																	checked={ !!(props.filters[cat].indexOf(elm) > -1) }
+																	checked={ !!(filters[cat].indexOf(elm) > -1) }
 																	value={ `${cat}${elm}` }
 																	onChange={ (e) => { props.changeFilters(cat, elm) } } />
 																{ elmName }
@@ -62,10 +61,12 @@ class GameDetails extends Component {
 					<div className="row max-width standard-row-bottom-padding small-row-top-padding">
 						<div className="col12 text-center">
 							<button
-								className="theme-button"
+								className={ `theme-button ${ hasFilters ? '' : 'inactive' }` }
 								onClick={ (e) => {
-									props.searchForSimilar(props.filters);
-									props.history.push('/similar-results');
+									if (hasFilters) {
+										props.searchForSimilar(props.filters);
+										props.history.push('/similar-results');
+									}
 								} }>
 								Search for similar games
 							</button>
@@ -79,9 +80,10 @@ class GameDetails extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		selectedGame: state.selectedGame,
+		selectedGame: state.selectedSearchedGame,
 		genres: state.genres,
 		themes: state.themes,
+		perspectives: state.perspectives,
 		filters: state.filters
 	}
 }

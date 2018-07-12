@@ -16,3 +16,14 @@ export function concatFullWords(str, charCount) {
 	}
 	return concatWords.join(' ');
 }
+
+function addZeroIfNeeded(digit) {
+	return digit.toString().length === 1 ? `0${ digit }` : digit;
+}
+
+export function convertSecs(secs) {
+	let minutes = Math.round(secs/60);
+	let hours = Math.floor(minutes/60);
+	let remainingMinutes = minutes - (hours * 60);
+	return `${ addZeroIfNeeded(hours) }:${ addZeroIfNeeded(remainingMinutes) }`;
+}

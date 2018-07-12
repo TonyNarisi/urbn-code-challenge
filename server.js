@@ -11,6 +11,12 @@ const igdb = require('igdb-api-node').default;
 const API_KEY = '8304f6f7976ed1399b55412a9acadeca';
 const client = igdb(API_KEY);
 
+const tagCreation = (typeId, item) => {
+	let tagNumber = typeId << 28;
+	tagNumber |= item;
+	return tagNumber;
+}
+
 app.use(bodyParser.json());
 app.use(webpackDevMiddleware(compiler, {
 	publicPath: config.output.publicPath
@@ -30,6 +36,10 @@ app.get('/game-details', (req, res) => {
 })
 
 app.get('/similar-results', (req, res) => {
+	res.redirect('/');
+})
+
+app.get('/similar-game', (req, res) => {
 	res.redirect('/');
 })
 
@@ -56,18 +66,16 @@ app.use('/api/search', (req, res) => {
 app.use('/api/similar', (req, res) => {
 	let genres = req.body.genres;
 	let themes = req.body.themes
+	let perspectives = req.body.perspectives;
 	var tags = [];
 	genres.map(genre => {
-		let typeId = 1;
-		let tagNumber = typeId << 28;
-		tagNumber |= genre;
-		tags.push(tagNumber);
+		tags.push(tagCreation(1, genre));
 	})
 	themes.map(theme => {
-		let typeId = 0;
-		let tagNumber = typeId << 28;
-		tagNumber |= theme;
-		tags.push(tagNumber);
+		tags.push(tagCreation(0, theme));
+	})
+	perspectives.map(perspective => {
+		tags.push(tagCreation(4, perspective));
 	})
 	client.games({
 		// The format needed for this differs than the docs show, consider changing to a raw request without SDK
@@ -106,6 +114,20 @@ app.use('/api/genres', (req, res) => {
 
 app.use('/api/themes', (req, res) => {
 	client.themes({
+		fields: 'id,name,slug,url,created_at,updated_at',
+		limit: 50
+	})
+	.then(response => {
+		res.json({ data: response });
+	})
+	.catch(err => {
+		console.log(err)
+		res.json({ data: { error: err } })
+	})
+})
+
+app.use('/api/perspectives', (req, res) => {
+	client.player_perspectives({
 		fields: 'id,name,slug,url,created_at,updated_at',
 		limit: 50
 	})

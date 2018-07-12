@@ -4,7 +4,10 @@ import {
 	END_API_CALL,
 	BEGIN_SEARCH_CALL,
 	END_SEARCH_CALL,
-	SELECT_GAME,
+	SHOW_NO_SEARCH_ERROR, 
+	HIDE_NO_SEARCH_ERROR,
+	SELECT_SEARCHED_GAME,
+	SELECT_SIMILAR_GAME,
 	CHANGE_FILTERS,
 	SWITCH_VISIBLE_SCREEN
 } from '../actions/index.js';
@@ -16,26 +19,32 @@ const initialState = {
 	'searchTerm': 'bioshock',
 	'searchedTerm': '',
 	'searchResults': [],
+	'showNoSearchError': false,
 	'isRetrievingGenres': false,
 	'genresApiErrors': false,
 	'genres': [],
 	'isRetrievingThemes': false,
 	'themesApiErrors': false,
 	'themes': [],
+	'isRetrievingPlatforms': false,
+	'platformsApiErrors': false,
+	'platforms': [],
+	'isRetrievingPerspectives': false,
+	'perspectivesApiErrors': false,
+	'perspectives': [],
 	'isRetrievingSimilars': false,
 	'similarsApiErrors': false,
 	'similars': [],
-	'visibleScreen': 'search-results',
-	'selectedGame': null,
+	'selectedSearchedGame': null,
 	'selectedSimilarGame': null,
 	'filters': {
 		'genres': [],
-		'themes': []
+		'themes': [],
+		'perspectives': []
 	}
 }
 
 const appStore = (state = initialState, action) => {
-	console.log(action);
 	switch (action.type) {
 		case CHANGE_SEARCH_TERM:
 			return {
@@ -49,11 +58,26 @@ const appStore = (state = initialState, action) => {
 				searchedTerm: state.searchTerm
 			}
 		case END_SEARCH_CALL:
+			// Clean the perspectives property to make genre/theme code reproducible on the property
+			let cleanedResults = action.results.map(game => {
+				game.perspectives = game.player_perspectives
+				return game;
+			});
 			return {
 				...state,
 				isSearching: false,
 				searchApiErrors: action.hasErrors,
-				searchResults: action.results
+				searchResults: cleanedResults
+			}
+		case SHOW_NO_SEARCH_ERROR:
+			return {
+				...state,
+				showNoSearchError: true
+			}
+		case HIDE_NO_SEARCH_ERROR:
+			return {
+				...state,
+				showNoSearchError: false
 			}
 		case BEGIN_API_CALL:
 			return {
@@ -67,11 +91,15 @@ const appStore = (state = initialState, action) => {
 				[`${action.callType}ApiErrors`]: action.hasErrors,
 				[action.callType]: action.payload
 			}
-		case SELECT_GAME:
+		case SELECT_SEARCHED_GAME:
 			return {
 				...state,
-				selectedGame: action.game,
-				visibleScreen: 'game-details'
+				selectedSearchedGame: action.game
+			}
+		case SELECT_SIMILAR_GAME:
+			return {
+				...state,
+				selectedSimilarGame: action.game
 			}
 		case CHANGE_FILTERS:
 			var newFilters = state.filters[action.category];
@@ -86,11 +114,6 @@ const appStore = (state = initialState, action) => {
 					...state.filters,
 					[action.category]: newFilters
 				}
-			}
-		case SWITCH_VISIBLE_SCREEN:
-			return {
-				...state,
-				visibleScreen: action.screen
 			}
 		default:
 			return state;

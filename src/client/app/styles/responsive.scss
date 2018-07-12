@@ -4,7 +4,29 @@
 	}
 }
 
+@media (max-width: 768px) {
+	.row-wrapper {
+		.row {
+			display: block;
+		}
+		[class^="col"] {
+			width: 100%;
+			margin-left: 0;
+			display: block;
+		}
+	}
+}
+
 @media (max-width: 580px) {
+	h1 {
+		font-size: 2.25rem;
+	}
+	input[type="text"] {
+		width: 15rem;
+	}
+	.search__wrapper {
+		max-width: 15rem;
+	}
 	.game-card {
 		max-width: 400px;
 		margin-left: auto;
