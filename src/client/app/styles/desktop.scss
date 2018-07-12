@@ -119,6 +119,19 @@ input[type="text"] {
 	}
 }
 
+// Preloader
+.preloader-wrapper__outer {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.7);
+	@include displayFlex()
+	@include justifyContent(center)
+	@include alignItems(center)
+}
+
 // Game Details
 .game__genres-themes {
 	ul {

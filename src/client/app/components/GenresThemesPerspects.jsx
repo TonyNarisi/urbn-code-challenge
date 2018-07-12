@@ -14,7 +14,7 @@ class GenresThemesPerspects extends Component {
 						return (
 							object[cat] && object[cat].length > 0 &&
 								<div
-									className={ `col${ Math.round(12/cats.filter(arr => { return arr.length > 0 }).length) }` }
+									className={ `col${ Math.round(12/cats.filter(curCat => { return object[curCat].length > 0 }).length) }` }
 									key={ cat }>
 									<h4>{ upperFirstChar(cat) }</h4>
 									<ul>
