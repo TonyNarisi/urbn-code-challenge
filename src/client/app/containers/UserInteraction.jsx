@@ -1,20 +1,48 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { changeSearchTerm, makeSearchCall } from '../actions/index.js';
+import { withRouter } from 'react-router-dom';
+import { changeSearchTerm, makeSearchCall, showNoSearchError, hideNoSearchError } from '../actions/index.js';
+import Explanation from '../components/Explanation';
 
 class UserInteraction extends Component {
 	render() {
 		let props = this.props;
 		return (
-			<div>
-				<input
-					type="text"
-					value={ props.searchTerm }
-					onChange={ (e) => { props.changeSearchTerm(e.target.value) } } />
-				<button
-					onClick={ (e) => { props.makeSearchCall(props.searchTerm) } }>
-					Click to search
-				</button>
+			<div className="user-interaction">
+				<Explanation />
+				<div className="row-wrapper">
+					<div className="row max-width narrow-column">
+						<div className="col12">
+							<form 
+								onSubmit={ (e) => {
+									e.preventDefault();
+									if (props.searchTerm != '') {
+										props.hideNoSearchError();
+										props.makeSearchCall(props.searchTerm);
+										props.history.push('/search-results');
+									} else {
+										props.showNoSearchError();
+									}
+								} }>
+								<input
+									type="text"
+									value={ props.searchTerm }
+									onChange={ (e) => { props.changeSearchTerm(e.target.value) } } />
+								<div className="search__wrapper">
+									<button
+										className={ `theme-button ${ props.searchTerm === '' ? 'inactive' : '' }` }>
+										Search
+									</button>
+								</div>
+							</form>
+							{ props.displayNoSearchError &&
+								<div className="error">
+									<p>Please provide a search term</p>
+								</div>
+							}
+						</div>
+					</div>
+				</div>
 			</div>
 		)		
 	}
@@ -22,7 +50,8 @@ class UserInteraction extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		searchTerm: state.searchTerm
+		searchTerm: state.searchTerm,
+		displayNoSearchError: state.displayNoSearchError
 	}
 }
 
@@ -33,8 +62,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		makeSearchCall: (term) => {
 			dispatch(makeSearchCall(term));
+		},
+		showNoSearchError: () => {
+			dispatch(showNoSearchError());
+		},
+		hideNoSearchError: () => {
+			dispatch(hideNoSearchError());
 		}
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserInteraction);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserInteraction));

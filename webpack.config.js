@@ -27,6 +27,10 @@ var config = {
 				test: /.scss$/,
 				include: APP_DIR,
 				loaders: 'style-loader!css-loader!sass-loader'
+			},
+			{
+				test: /\.(png|jpg|gif)$/,
+				loader: 'file-loader'
 			}
 		]
 	},

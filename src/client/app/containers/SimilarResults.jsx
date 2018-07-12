@@ -1,47 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { upperFirstChar } from '../helpers.js';
+import { withRouter } from 'react-router-dom';
+import { selectSimilarGame } from '../actions/index.js';
+import BackButton from './BackButton';
 import GameCard from '../components/GameCard';
+import GenresThemesPerspects from '../components/GenresThemesPerspects';
 
 class SimilarResults extends Component {
 	render() {
 		let props = this.props;
-		let cats = ['genres', 'themes'];
 		return (
 			<div>
-				<p>Displaying games with:</p>
-				<div>
-					{	cats.map(cat => {
-						return (
-							<div
-								key={ cat }>
-								{ cat.length > 0 &&
-									<div>
-										<p>{ upperFirstChar(cat) }</p>
-										<ul>
-											{ props.filters[cat].map(elm => {
-												// Extract this to helper probably
-												let elmName = props[cat].filter(dict => {
-													return dict.id === elm;
-												})[0].name;
-												return (
-													<li key={ `${cat}${elm}` }>{ elmName }</li>
-												)
-											})}
-										</ul>
-									</div>
-								}
-							</div>
-						)
-					})}
+				<BackButton
+					backScreen={ props.selectedSearchedGame.name } />
+				<div className="row-wrapper">
+					<div className="row max-width standard-row-top-padding">
+						<div className="col12">
+							<h3>Displaying games with:</h3>
+						</div>
+					</div>
 				</div>
-				{ props.similars.map(game => {
-					return (
-						<GameCard 
-							key={ game.id }
-							game={ game } />
-					)
-				})}
+				<GenresThemesPerspects 
+					cats={ ['genres', 'themes', 'perspectives'] }
+					object={ props.filters } />
+				<div className="row-wrapper">
+					<div className="row max-width standard-row-padding">
+						<div className="col12">
+							<div className="search-results__wrapper">
+								{ props.similars.map(game => {
+									return (
+										<GameCard 
+											key={ game.id }
+											game={ game }
+											handleClick={ (e) => {
+												props.selectSimilarGame(game);
+												props.history.push('similar-game');
+											} } />
+									)
+								})}
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		)
 	}
@@ -51,9 +51,16 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		similars: state.similars,
 		filters: state.filters,
-		genres: state.genres,
-		themes: state.themes
+		selectedSearchedGame: state.selectedSearchedGame
 	}
 }
 
-export default connect(mapStateToProps)(SimilarResults);
+const mapDispatchToProps = (dispatch, ownProps) => {
+	return {
+		selectSimilarGame: (game) => {
+			dispatch(selectSimilarGame(game));
+		}
+	}
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SimilarResults));

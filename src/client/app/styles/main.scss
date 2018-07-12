@@ -1,5 +1,5 @@
-.game-card {
-	ul {
-		list-style-type: none;
-	}
-}
+@import '~normalize.css/normalize.css';
+@import 'mixins';
+@import 'layout';
+@import 'desktop';
+@import 'responsive';
