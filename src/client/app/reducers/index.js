@@ -6,6 +6,8 @@ import {
 	END_SEARCH_CALL,
 	SHOW_NO_SEARCH_ERROR, 
 	HIDE_NO_SEARCH_ERROR,
+	SHOW_NO_FILTER_ERROR, 
+	HIDE_NO_FILTER_ERROR,
 	SELECT_SEARCHED_GAME,
 	SELECT_SIMILAR_GAME,
 	CHANGE_FILTERS,
@@ -19,7 +21,8 @@ const initialState = {
 	'searchTerm': 'bioshock',
 	'searchedTerm': '',
 	'searchResults': [],
-	'showNoSearchError': false,
+	'displayNoSearchError': false,
+	'displayNoFilterError': false,
 	'isRetrievingGenres': false,
 	'genresApiErrors': false,
 	'genres': [],
@@ -72,12 +75,22 @@ const appStore = (state = initialState, action) => {
 		case SHOW_NO_SEARCH_ERROR:
 			return {
 				...state,
-				showNoSearchError: true
+				displayNoSearchError: true
 			}
 		case HIDE_NO_SEARCH_ERROR:
 			return {
 				...state,
-				showNoSearchError: false
+				displayNoSearchError: false
+			}
+		case SHOW_NO_FILTER_ERROR:
+			return {
+				...state,
+				displayNoFilterError: true
+			}
+		case HIDE_NO_FILTER_ERROR:
+			return {
+				...state,
+				displayNoFilterError: false
 			}
 		case BEGIN_API_CALL:
 			return {

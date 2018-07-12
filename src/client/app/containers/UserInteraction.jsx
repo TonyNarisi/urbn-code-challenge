@@ -17,8 +17,11 @@ class UserInteraction extends Component {
 								onSubmit={ (e) => {
 									e.preventDefault();
 									if (props.searchTerm != '') {
+										props.hideNoSearchError();
 										props.makeSearchCall(props.searchTerm);
 										props.history.push('/search-results');
+									} else {
+										props.showNoSearchError();
 									}
 								} }>
 								<input
@@ -32,8 +35,8 @@ class UserInteraction extends Component {
 									</button>
 								</div>
 							</form>
-							{ props.showNoSearchError &&
-								<div class="error">
+							{ props.displayNoSearchError &&
+								<div className="error">
 									<p>Please provide a search term</p>
 								</div>
 							}
@@ -48,7 +51,7 @@ class UserInteraction extends Component {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		searchTerm: state.searchTerm,
-		showNoSearchError: state.showNoSearchError
+		displayNoSearchError: state.displayNoSearchError
 	}
 }
 

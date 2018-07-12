@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { changeFilters, searchForSimilar } from '../actions/index.js';
+import { changeFilters, searchForSimilar, showNoFilterError, hideNoFilterError } from '../actions/index.js';
 import { upperFirstChar, concatFullWords } from '../helpers.js';
 import BackButton from './BackButton';
 import GameInfo from '../components/GameInfo';
@@ -64,12 +64,20 @@ class GameDetails extends Component {
 								className={ `theme-button ${ hasFilters ? '' : 'inactive' }` }
 								onClick={ (e) => {
 									if (hasFilters) {
+										props.hideNoFilterError();
 										props.searchForSimilar(props.filters);
 										props.history.push('/similar-results');
+									} else {
+										props.showNoFilterError();
 									}
 								} }>
 								Search for similar games
 							</button>
+							{ props.displayNoFilterError &&
+								<div className="error">
+									<p>Please provide filtering criteria</p>
+								</div>
+							}
 						</div>
 					</div>
 				</div>
@@ -84,7 +92,8 @@ const mapStateToProps = (state, ownProps) => {
 		genres: state.genres,
 		themes: state.themes,
 		perspectives: state.perspectives,
-		filters: state.filters
+		filters: state.filters,
+		displayNoFilterError: state.displayNoFilterError
 	}
 }
 
@@ -95,6 +104,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		searchForSimilar: (filters) => {
 			dispatch(searchForSimilar(filters));
+		},
+		showNoFilterError: () => {
+			dispatch(showNoFilterError());
+		},
+		hideNoFilterError: () => {
+			dispatch(hideNoFilterError());
 		}
 	}
 }

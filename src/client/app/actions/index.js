@@ -5,6 +5,8 @@ export const BEGIN_SEARCH_CALL = 'BEGIN_SEARCH_CALL';
 export const END_SEARCH_CALL = 'END_SEARCH_CALL';
 export const SHOW_NO_SEARCH_ERROR = 'SHOW_NO_SEARCH_ERROR';
 export const HIDE_NO_SEARCH_ERROR = 'HIDE_NO_SEARCH_ERROR';
+export const SHOW_NO_FILTER_ERROR = 'SHOW_NO_FILTER_ERROR';
+export const HIDE_NO_FILTER_ERROR = 'HIDE_NO_FILTER_ERROR';
 export const BEGIN_API_CALL = 'BEGIN_API_CALL';
 export const END_API_CALL = 'END_API_CALL';
 export const SELECT_SEARCHED_GAME = 'SELECT_SEARCHED_GAME';
@@ -59,6 +61,14 @@ export function showNoSearchError() {
 
 export function hideNoSearchError() {
 	return { type: HIDE_NO_SEARCH_ERROR };
+}
+
+export function showNoFilterError() {
+	return { type: SHOW_NO_FILTER_ERROR };
+}
+
+export function hideNoFilterError() {
+	return { type: HIDE_NO_FILTER_ERROR };
 }
 
 export function getAll(callType) {
