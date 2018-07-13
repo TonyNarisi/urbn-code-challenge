@@ -8,7 +8,7 @@ const compiler = webpack(config);
 const bodyParser = require('body-parser');
 
 const igdb = require('igdb-api-node').default;
-const API_KEY = '8304f6f7976ed1399b55412a9acadeca';
+const API_KEY = '1eb1f39d07abdbf8502ef808189b4f44';
 const client = igdb(API_KEY);
 
 const tagCreation = (typeId, item) => {
