@@ -6,10 +6,11 @@ class BackButton extends Component {
 		let props = this.props;
 		return (
 			<div className="row-wrapper">
-				<div className="row small-row-padding max-width">
+				<div className="row standard-row-top-padding small-row-bottom-padding max-width">
 					<div className="col12">
 						<a
 							href="#back"
+							className="back-button"
 							onClick={ (e) => {
 								e.preventDefault();
 								props.history.goBack();

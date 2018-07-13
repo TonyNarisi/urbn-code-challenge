@@ -45,6 +45,15 @@ input[type="text"] {
 		background-color: #379683;
 	}
 }
+.back-button {
+	color: #05386b;
+	text-decoration: none;
+	font-weight: bold;
+	@include transition(color 0.4s ease)
+	&:hover {
+		color: #379683;
+	}
+}
 
 // General
 .text-center {
@@ -55,6 +64,7 @@ input[type="text"] {
 .hero__wrapper {
 	background-size: cover;
 	background-position: right center;
+	background-image: url('../../public/assets/mario-1558068_1280.jpg');
 	.hero__row {
 		padding-top: 4.375rem;
 		padding-bottom: 4.375rem;
@@ -86,10 +96,8 @@ input[type="text"] {
 	@include transition(box-shadow 0.4s ease)
 	.game__title-and-cover {
 		@include displayFlex()
-		img {
-			margin-right: 20px;
-		}
 		h4 {
+			margin-left: 20px;
 			margin-right: 20px;
 			@include alignSelf(center)
 		}		
@@ -108,9 +116,11 @@ input[type="text"] {
 		    margin-bottom: 5px;
 		    color: #fff;
 		    background-color: #05386b;
-		    &:last-child {
-		    	margin-right: 0;
-		    }
+			}
+			span:last-child {
+				.game__tag:last-child {
+					margin-right: 0;
+				}
 			}
 		}
 	}

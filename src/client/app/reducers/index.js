@@ -16,13 +16,28 @@ import {
 import { upperFirstChar } from '../helpers.js';
 
 const initialState = {
+	// Search
 	'isSearching': false,
 	'searchApiErrors': false,
-	'searchTerm': 'bioshock',
+	'searchTerm': '',
 	'searchedTerm': '',
 	'searchResults': [],
 	'displayNoSearchError': false,
+	'selectedSearchedGame': null,
+
+	// Filters/Similars
 	'displayNoFilterError': false,
+	'isRetrievingSimilars': false,
+	'similarsApiErrors': false,
+	'similars': [],
+	'selectedSimilarGame': null,
+	'filters': {
+		'genres': [],
+		'themes': [],
+		'perspectives': []
+	},
+
+	// Dictionaries
 	'isRetrievingGenres': false,
 	'genresApiErrors': false,
 	'genres': [],
@@ -31,17 +46,7 @@ const initialState = {
 	'themes': [],
 	'isRetrievingPerspectives': false,
 	'perspectivesApiErrors': false,
-	'perspectives': [],
-	'isRetrievingSimilars': false,
-	'similarsApiErrors': false,
-	'similars': [],
-	'selectedSearchedGame': null,
-	'selectedSimilarGame': null,
-	'filters': {
-		'genres': [],
-		'themes': [],
-		'perspectives': []
-	}
+	'perspectives': []
 }
 
 const appStore = (state = initialState, action) => {
