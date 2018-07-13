@@ -27,7 +27,7 @@ class SearchResults extends Component {
         <div className="row-wrapper">
           <div className="row max-width standard-row-padding">
             <div className="col12">
-              { !props.isSearching &&
+              { !props.isSearching && !props.searchApiErrors &&
                 <div className="search-results__wrapper">
                   { props.searchResults.length > 0 ?
                       props.searchResults.map(game => {
@@ -56,6 +56,20 @@ class SearchResults extends Component {
                       </h4>
                   }
                 </div>
+              }
+              { props.searchApiErrors &&
+                <h4 className="center-elm">
+                  <span className="normal-weight">Sorry, we encountered an error retrieving information from the API please </span>
+                  <a
+                    href="#back"
+                    onClick={ (e) => {
+                      e.preventDefault();
+                      props.history.goBack();
+                    } }>
+                    return to the search screen
+                  </a>
+                  <span className="normal-weight"> and try submitting your search again.</span>
+                </h4>
               }
             </div>
           </div>

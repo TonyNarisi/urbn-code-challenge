@@ -26,19 +26,36 @@ class SimilarResults extends Component {
         <div className="row-wrapper">
           <div className="row max-width standard-row-padding">
             <div className="col12">
-              <div className="search-results__wrapper">
-                { props.similars.map(game => {
-                  return (
-                    <GameCard 
-                      key={ game.id }
-                      game={ game }
-                      handleClick={ (e) => {
-                        props.selectSimilarGame(game);
-                        props.history.push('similar-game');
-                      } } />
-                  )
-                })}
-              </div>
+            { !props.similarsApiErrors ?
+                <div className="search-results__wrapper">
+                  { props.similars.map(game => {
+                    return (
+                      <GameCard 
+                        key={ game.id }
+                        game={ game }
+                        handleClick={ (e) => {
+                          props.selectSimilarGame(game);
+                          props.history.push('similar-game');
+                        } } />
+                    )
+                  })}
+                </div>
+              :
+                <div>
+                  <h4 className="center-elm">
+                    <span className="normal-weight">Sorry, we encountered an error retrieving information from the API. Please </span>
+                    <a
+                      href="#back"
+                      onClick={ (e) => {
+                        e.preventDefault();
+                        props.history.goBack();
+                      } }>
+                      return to the game details screen
+                    </a>
+                    <span className="normal-weight"> and try submitting your filtered query again.</span>
+                  </h4>
+                </div>
+            }
             </div>
           </div>
         </div>
@@ -51,7 +68,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     similars: state.similarGameData.similars,
     filters: state.similarGameData.filters,
-    selectedSearchedGame: state.searchData.selectedSearchedGame
+    selectedSearchedGame: state.searchData.selectedSearchedGame,
+    similarsApiErrors: state.similarGameData.similarsApiErrors
   }
 }
 

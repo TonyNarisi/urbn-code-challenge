@@ -81,6 +81,12 @@ a {
 .normal-weight {
   font-weight: 400;
 }
+.error {
+  p {
+    text-align: center;
+    color: #fc4445;
+  }
+}
 
 // Hero
 .hero__wrapper {
