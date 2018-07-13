@@ -14,48 +14,48 @@ import Hero from './Hero';
 const history = createHistory();
 
 class App extends Component {
-	componentWillMount() {
-		let props = this.props;
-		props.getAll('genres');
-		props.getAll('themes');
-		props.getAll('perspectives');
-	}
+  componentWillMount() {
+    let props = this.props;
+    props.getAll('genres');
+    props.getAll('themes');
+    props.getAll('perspectives');
+  }
 
-	render() {
-		let props = this.props;
-		return (
-			<div className="app-wrapper">
-				<Hero />
-				<Router history={ history }>
-					<div>
-						<Route exact path="/" component={ UserInteraction } />
-						<Route path="/search-results" component={ SearchResults } />
-						<Route path="/game-details" component={ GameDetails } />
-						<Route path="/similar-results" component={ SimilarResults } />
-						<Route path="/similar-game" component={ SimilarGame } />
-					</div>
-				</Router>
-				{ (props.isSearching || props.isRetrievingSimilars) &&
-					<Preloader />
-				}
-			</div>
-		)		
-	}
+  render() {
+    let props = this.props;
+    return (
+      <div className="app-wrapper">
+        <Hero />
+        <Router history={ history }>
+          <div>
+            <Route exact path="/" component={ UserInteraction } />
+            <Route path="/search-results" component={ SearchResults } />
+            <Route path="/game-details" component={ GameDetails } />
+            <Route path="/similar-results" component={ SimilarResults } />
+            <Route path="/similar-game" component={ SimilarGame } />
+          </div>
+        </Router>
+        { (props.isSearching || props.isRetrievingSimilars) &&
+          <Preloader />
+        }
+      </div>
+    )   
+  }
 }
 
 export const mapStateToProps = (state, ownProps) => {
-	return {
-		isSearching: state.isSearching,
-		isRetrievingSimilars: state.isRetrievingSimilars
-	}
+  return {
+    isSearching: state.searchData.isSearching,
+    isRetrievingSimilars: state.similarGameData.isRetrievingSimilars
+  }
 }
 
 export const mapDispatchToProps = (dispatch, ownProps) => {
-	return {
-		getAll: (callType) => {
-			dispatch(getAll(callType));
-		}
-	}
+  return {
+    getAll: (callType) => {
+      dispatch(getAll(callType));
+    }
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
