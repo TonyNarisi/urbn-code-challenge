@@ -14,7 +14,7 @@ export function concatFullWords(str, charCount) {
 			break;
 		}
 	}
-	return concatWords.join(' ');
+	return concatWords.join(' ')
 }
 
 function addZeroIfNeeded(digit) {
