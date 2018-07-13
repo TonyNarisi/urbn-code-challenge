@@ -30,7 +30,7 @@ class GameDetails extends Component {
               return(
                 <div
                   key={ cat }
-                  className="col6">
+                  className="col4">
                   { game[cat] && game[cat].length > 0 && props[cat].length > 0 &&
                     <div>
                       <p>{ upperFirstChar(cat) }</p>
