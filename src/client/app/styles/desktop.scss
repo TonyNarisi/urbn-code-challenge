@@ -5,6 +5,7 @@ html, body {
 }
 body {
   padding-bottom: 3.75rem;
+  overflow-x: hidden;
 }
 * {
   box-sizing: border-box;
@@ -127,8 +128,14 @@ a {
     h4 {
       margin-left: 20px;
       margin-right: 20px;
+      // Fix IE10 flex overflow bug
+      max-width: calc(100% - 40px);
       @include alignSelf(center)
-    }   
+    }
+    img + h4 {
+      // Fix IE10 flex overflow bug
+      max-width: calc(100% - 130px);
+    }
   }
   .game__bottom {
     padding: 0 1.25rem;
