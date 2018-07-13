@@ -27,21 +27,36 @@ class SearchResults extends Component {
         <div className="row-wrapper">
           <div className="row max-width standard-row-padding">
             <div className="col12">
-              <div className="search-results__wrapper">
-                { !props.isSearching && props.searchResults.length > 0 &&
-                  props.searchResults.map(game => {
-                    return(
-                      <GameCard
-                        key={ game.id }
-                        game={ game }
-                        handleClick={ (e) => {
-                          props.selectSearchedGame(game);
-                          props.history.push('/game-details');
-                        } } />
-                    )
-                  })
-                }
-              </div>
+              { !props.isSearching &&
+                <div className="search-results__wrapper">
+                  { props.searchResults.length > 0 ?
+                      props.searchResults.map(game => {
+                        return(
+                          <GameCard
+                            key={ game.id }
+                            game={ game }
+                            handleClick={ (e) => {
+                              props.selectSearchedGame(game);
+                              props.history.push('/game-details');
+                            } } />
+                        )
+                      })
+                    :
+                      <h4 className="center-elm">
+                        <span className="normal-weight">No results found. Please </span>
+                        <a
+                          href="#back"
+                          onClick={ (e) => {
+                            e.preventDefault();
+                            props.history.goBack();
+                          } }>
+                          go back to the search screen
+                        </a>
+                        <span className="normal-weight"> and refine your query.</span>
+                      </h4>
+                  }
+                </div>
+              }
             </div>
           </div>
         </div>

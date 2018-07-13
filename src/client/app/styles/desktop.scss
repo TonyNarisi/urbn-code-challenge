@@ -45,13 +45,18 @@ input[type="text"] {
     background-color: #379683;
   }
 }
-.back-button {
+a {
   color: #05386b;
   text-decoration: none;
+  @include transition(color 0.4s ease)
+  &:hover {
+    color: #379683;
+  }
+}
+.back-button {
   font-weight: bold;
   position: relative;
   margin-left: 24px;
-  @include transition(color 0.4s ease)
   &:before {
     content: '\2190';
     position: absolute;
@@ -59,7 +64,6 @@ input[type="text"] {
     @include transition(left 0.4s ease)
   }
   &:hover {
-    color: #379683;
     &:before {
       left: -30px;
     }
@@ -69,6 +73,13 @@ input[type="text"] {
 // General
 .text-center {
   text-align: center;
+}
+.center-elm {
+  margin-left: auto;
+  margin-right: auto;
+}
+.normal-weight {
+  font-weight: 400;
 }
 
 // Hero

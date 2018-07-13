@@ -13,14 +13,18 @@ export function getAll(callType) {
     })
     .then(data => {
       data.json().then(resp => {
-        let cleanedPayload = resp.data.body.map(item => {
-          return { id: item.id, name: item.name };
-        })
-        dispatch(endApiCall(callType, false, cleanedPayload));
+        if (resp.data.error) {
+          dispatch(endApiCall(callType, true, []));
+        } else {
+          let cleanedPayload = resp.data.body.map(item => {
+            return { id: item.id, name: item.name };
+          })
+          dispatch(endApiCall(callType, false, cleanedPayload));
+        }
       })
     })
     .catch(err => {
-      console.log(err);
+
       dispatch(endApiCall(callType, true, []));
     })
   }

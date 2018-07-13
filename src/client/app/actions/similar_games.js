@@ -1,10 +1,12 @@
 import fetch from 'cross-fetch';
 import 'cross-fetch/polyfill';
 
+import { API_ROOT } from '../constants.js';
+
 export const SHOW_NO_FILTER_ERROR = 'SHOW_NO_FILTER_ERROR';
 export const HIDE_NO_FILTER_ERROR = 'HIDE_NO_FILTER_ERROR';
-export const BEGIN_FILTER_CALL = 'BEGIN_FILTER_CALL';
-export const END_FILTER_CALL = 'END_FILTER_CALL';
+export const BEGIN_SIMILARS_CALL = 'BEGIN_SIMILARS_CALL';
+export const END_SIMILARS_CALL = 'END_SIMILARS_CALL';
 export const SELECT_SIMILAR_GAME = 'SELECT_SIMILAR_GAME';
 export const CHANGE_FILTERS = 'CHANGE_FILTERS';
 
