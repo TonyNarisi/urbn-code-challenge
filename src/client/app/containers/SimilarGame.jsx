@@ -14,12 +14,13 @@ class SimilarGame extends Component {
 				<BackButton 
 					backScreen="similar games" />
 				<GameInfo
-					game={ game } />
+					game={ game }
+					narrow={ true } />
 				<GenresThemesPerspects 
 					cats={ ['genres', 'themes', 'perspectives'] }
 					object={ game } />
 				<div className="row-wrapper">
-					<div className="row max-width standard-row-padding">
+					<div className="row max-width standard-row-padding extra-game-info">
 						<div className="col12">
 							{ game.total_rating &&
 								<div>

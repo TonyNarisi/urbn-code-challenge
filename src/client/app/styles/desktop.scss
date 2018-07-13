@@ -45,6 +45,26 @@ input[type="text"] {
 		background-color: #379683;
 	}
 }
+.back-button {
+	color: #05386b;
+	text-decoration: none;
+	font-weight: bold;
+	position: relative;
+	margin-left: 24px;
+	@include transition(color 0.4s ease)
+	&:before {
+		content: '\2190';
+		position: absolute;
+		left: -24px;
+		@include transition(left 0.4s ease)
+	}
+	&:hover {
+		color: #379683;
+		&:before {
+			left: -30px;
+		}
+	}
+}
 
 // General
 .text-center {
@@ -55,6 +75,7 @@ input[type="text"] {
 .hero__wrapper {
 	background-size: cover;
 	background-position: right center;
+	background-image: url('../assets/mario-1558068_1280.jpg');
 	.hero__row {
 		padding-top: 4.375rem;
 		padding-bottom: 4.375rem;
@@ -86,10 +107,8 @@ input[type="text"] {
 	@include transition(box-shadow 0.4s ease)
 	.game__title-and-cover {
 		@include displayFlex()
-		img {
-			margin-right: 20px;
-		}
 		h4 {
+			margin-left: 20px;
 			margin-right: 20px;
 			@include alignSelf(center)
 		}		
@@ -108,15 +127,30 @@ input[type="text"] {
 		    margin-bottom: 5px;
 		    color: #fff;
 		    background-color: #05386b;
-		    &:last-child {
-		    	margin-right: 0;
-		    }
+			}
+			span:last-child {
+				.game__tag:last-child {
+					margin-right: 0;
+				}
 			}
 		}
 	}
 	&:hover {
 		box-shadow: 0 5px 20px 2px rgba(0,0,0,0.3);
 	}
+}
+
+// Preloader
+.preloader-wrapper__outer {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.7);
+	@include displayFlex()
+	@include justifyContent(center)
+	@include alignItems(center)
 }
 
 // Game Details
@@ -131,5 +165,14 @@ input[type="text"] {
 				margin-bottom: 0.5rem;
 			}
 		}
+	}
+}
+
+.extra-game-info {
+	h4 {
+		margin-bottom: 0.5em;
+	}
+	h5 {
+		margin-top: 0.5em;
 	}
 }

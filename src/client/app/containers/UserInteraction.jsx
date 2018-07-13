@@ -26,6 +26,7 @@ class UserInteraction extends Component {
 								} }>
 								<input
 									type="text"
+									placeholder="Stardew Valley"
 									value={ props.searchTerm }
 									onChange={ (e) => { props.changeSearchTerm(e.target.value) } } />
 								<div className="search__wrapper">

@@ -8,8 +8,8 @@ import SearchResults from '../containers/SearchResults';
 import GameDetails from '../containers/GameDetails';
 import SimilarResults from '../containers/SimilarResults';
 import SimilarGame from '../containers/SimilarGame';
+import Preloader from './Preloader';
 import Hero from './Hero';
-import styles from '../styles/main.scss';
 
 const history = createHistory();
 
@@ -22,8 +22,9 @@ class App extends Component {
 	}
 
 	render() {
+		let props = this.props;
 		return (
-			<div>
+			<div className="app-wrapper">
 				<Hero />
 				<Router history={ history }>
 					<div>
@@ -34,8 +35,18 @@ class App extends Component {
 						<Route path="/similar-game" component={ SimilarGame } />
 					</div>
 				</Router>
+				{ (props.isSearching || props.isRetrievingSimilars) &&
+					<Preloader />
+				}
 			</div>
 		)		
+	}
+}
+
+export const mapStateToProps = (state, ownProps) => {
+	return {
+		isSearching: state.isSearching,
+		isRetrievingSimilars: state.isRetrievingSimilars
 	}
 }
 
@@ -47,4 +58,4 @@ export const mapDispatchToProps = (dispatch, ownProps) => {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

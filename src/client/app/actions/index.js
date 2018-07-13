@@ -1,3 +1,6 @@
+import fetch from 'cross-fetch';
+import 'cross-fetch/polyfill';
+
 const API_ROOT = '/api';
 
 export const CHANGE_SEARCH_TERM = 'CHANGE_SEARCH_TERM';
