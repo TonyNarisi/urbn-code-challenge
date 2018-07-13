@@ -10,7 +10,6 @@ import SimilarResults from '../containers/SimilarResults';
 import SimilarGame from '../containers/SimilarGame';
 import Preloader from './Preloader';
 import Hero from './Hero';
-import styles from '../styles/main.scss';
 
 const history = createHistory();
 

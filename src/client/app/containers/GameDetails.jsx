@@ -22,7 +22,8 @@ class GameDetails extends Component {
 				<BackButton 
 					backScreen="search results" />
 				<GameInfo 
-					game={ game } />
+					game={ game }
+					narrow={ true } />
 				<div className="row-wrapper">
 					<div className="row max-width standard-row-top-padding game__genres-themes">
 						{ cats.map(cat => {

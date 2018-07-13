@@ -49,9 +49,20 @@ input[type="text"] {
 	color: #05386b;
 	text-decoration: none;
 	font-weight: bold;
+	position: relative;
+	margin-left: 24px;
 	@include transition(color 0.4s ease)
+	&:before {
+		content: '\2190';
+		position: absolute;
+		left: -24px;
+		@include transition(left 0.4s ease)
+	}
 	&:hover {
 		color: #379683;
+		&:before {
+			left: -30px;
+		}
 	}
 }
 
@@ -64,7 +75,7 @@ input[type="text"] {
 .hero__wrapper {
 	background-size: cover;
 	background-position: right center;
-	background-image: url('../../public/assets/mario-1558068_1280.jpg');
+	background-image: url('../assets/mario-1558068_1280.jpg');
 	.hero__row {
 		padding-top: 4.375rem;
 		padding-bottom: 4.375rem;
@@ -154,5 +165,14 @@ input[type="text"] {
 				margin-bottom: 0.5rem;
 			}
 		}
+	}
+}
+
+.extra-game-info {
+	h4 {
+		margin-bottom: 0.5em;
+	}
+	h5 {
+		margin-top: 0.5em;
 	}
 }

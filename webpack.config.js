@@ -1,5 +1,8 @@
 const webpack = require('webpack');
 const path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const BUILD_DIR = path.resolve(__dirname, 'src/client/public');
 const APP_DIR = path.resolve(__dirname, 'src/client/app');
@@ -19,14 +22,18 @@ var config = {
 	module: {
 		rules: [
 			{
+				test: /.scss$/,
+				include: APP_DIR,
+        use: [
+          process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader"
+        ]
+			},
+			{
 				test: /.jsx?/,
 				include: APP_DIR,
 				loader: 'babel-loader'
-			},
-			{
-				test: /.scss$/,
-				include: APP_DIR,
-				loaders: 'style-loader!css-loader!resolve-url-loader!sass-loader!'
 			},
 			{
 				test: /\.(png|jpg|gif)$/,
@@ -35,8 +42,23 @@ var config = {
 		]
 	},
 	optimization: {
-		minimize: process.env.NODE_ENV === 'production'
-	}
+		minimizer: [
+			new UglifyJsPlugin(),
+			new OptimizeCssAssetsPlugin({})
+		]
+	},
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
+	new OptimizeCssAssetsPlugin({
+    assetNameRegExp: /\.optimize\.css$/g,
+    cssProcessor: require('cssnano'),
+    cssProcessorOptions: { safe: true, discardComments: { removeAll: true } },
+    canPrint: true
+	})
+  ]
 }
 
 module.exports = config;
